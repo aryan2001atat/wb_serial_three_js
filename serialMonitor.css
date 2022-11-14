@@ -20,11 +20,25 @@ input[type=text] {
 #serialResults {
     font-family: monospace;
     white-space: pre;
-    height: 400px;
-    width: 90%;
+    height: 478px;
+    width: 47%;
     border-style: solid;
     overflow: scroll;
     background-color: rgb(88, 92, 92);
     padding: 10px;
     margin: 0px;
+}
+
+body {
+    margin: 0;
+}
+
+canvas { 
+    width: 50% !important;
+    height: 50% !important;
+    position: fixed;
+    top: 25%;
+    right: 8px;
+    border: 1px solid;
+    border-color: #696 #363 #363 #696;
 }

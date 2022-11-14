@@ -1,4 +1,43 @@
 var port, textEncoder, writableStreamClosed, writer;
+
+
+
+
+
+
+// Rendering Cube Code
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+var geometry = new THREE.BoxGeometry(1, 1, 1);
+var material = new THREE.MeshNormalMaterial({ side: THREE.Doubleside });
+var cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+camera.position.z = 5;
+
+// var animate = function () {
+//     requestAnimationFrame(animate);
+    
+//     cube.rotation.x += 0.01;
+//     cube.rotation.y += 0.01;
+    
+//     renderer.render(scene, camera);
+// };
+// animate();
+
+
+
+
+
+
+//  Reading and writing
+
 async function connectSerial() {
     try {
         // Prompt user to select any serial port.
@@ -37,6 +76,12 @@ async function listenToPort() {
         }
         // value is a string.
         appendToTerminal(value);
+        
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+
+
     }
 }
 const serialResultsDiv = document.getElementById("serialResults");
@@ -55,3 +100,50 @@ document.getElementById("lineToSend").addEventListener("keyup", async function (
 document.getElementById("baud").value = (localStorage.baud == undefined ? 9600 : localStorage.baud);
 document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
 document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var scene = new THREE.Scene();
+// var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// var renderer = new THREE.WebGLRenderer();
+// renderer.setSize(window.innerWidth, window.innerHeight);
+// document.body.appendChild(renderer.domElement);
+
+// var geometry = new THREE.BoxGeometry(1, 1, 1);
+// var material = new THREE.MeshNormalMaterial({ side: THREE.Doubleside });
+// var cube = new THREE.Mesh(geometry, material);
+// scene.add(cube);
+
+// camera.position.z = 5;
+
+// var animate = function () {
+//     requestAnimationFrame(animate);
+    
+//     cube.rotation.x += 0.01;
+//     cube.rotation.y += 0.01;
+    
+//     renderer.render(scene, camera);
+// };
+// animate();
