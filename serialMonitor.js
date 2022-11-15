@@ -74,16 +74,33 @@ async function listenToPort() {
             reader.releaseLock();
             break;
         }
+
+        let chunks = value.split("");
+        console.log("chunks = ", chunks);
+        let buffer = "";
+        if(chunks.length > 0) {
+            chunks.forEach(element => {
+                if (element != '\r') {
+                    buffer += element;
+                }
+            });
+        }
+        console.log("buffer = ", buffer.split(""));
         // value is a string.
-        appendToTerminal(value);
+        appendToTerminal(buffer);
         
         // cube.rotation.x = THREE.Math.degToRad(value);
         // cube.rotation.y = 0.01;
-        // var rotations = value.split(",");
-        // var x = rotations[0];
-        // var y = rotations[1];
+        
+        // var rotations = value.split("\r\n");
+        // console.log("value = ", value);
+        // console.log("rotations = ", rotations);
+        // var x = parseInt(rotations[0]);
+        // var y = parseInt(rotations[1]);
+        
         // cube.rotateX(THREE.Math.degToRad(x));
         // cube.rotateY(THREE.Math.degToRad(y));
+        
         renderer.render(scene, camera);
 
 
