@@ -1,6 +1,7 @@
 var port, textEncoder, writableStreamClosed, writer;
 
-
+let packet = "";
+let readyPacket = "";
 
 
 
@@ -76,7 +77,6 @@ async function listenToPort() {
         }
 
         let chunks = value.split("");
-        console.log("chunks = ", chunks);
         let buffer = "";
         if(chunks.length > 0) {
             chunks.forEach(element => {
@@ -85,12 +85,21 @@ async function listenToPort() {
                 }
             });
         }
-        console.log("buffer = ", buffer.split(""));
-        // value is a string.
+
         appendToTerminal(buffer);
+
+        let bufferChunks = buffer.split("");
+        if (bufferChunks.length > 0) {
+            bufferChunks.forEach(element => {
+                if (element != '\n') {
+                    packet += element;
+                }  else {
+                    readyPacket = packet;
+                    packet = "";
+                }
+            });
+        }
         
-        // cube.rotation.x = THREE.Math.degToRad(value);
-        // cube.rotation.y = 0.01;
         
         // var rotations = value.split("\r\n");
         // console.log("value = ", value);
