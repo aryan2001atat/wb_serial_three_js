@@ -3,7 +3,8 @@ var port, textEncoder, writableStreamClosed, writer;
 let packet = "";
 let readyPacket = "";
 
-
+let prevRx = 0;
+let prevRy = 0;
 
 
 // Rendering Cube Code
@@ -100,15 +101,22 @@ async function listenToPort() {
             });
         }
         
-        
-        // var rotations = value.split("\r\n");
-        // console.log("value = ", value);
-        // console.log("rotations = ", rotations);
-        // var x = parseInt(rotations[0]);
-        // var y = parseInt(rotations[1]);
-        
-        // cube.rotateX(THREE.Math.degToRad(x));
-        // cube.rotateY(THREE.Math.degToRad(y));
+        if(readyPacket.length > 0) {
+            let rotations = readyPacket.split(",");
+            
+            let currentRx = parseFloat(rotations[0]);
+            let currentRy = parseFloat(rotations[1]);
+            
+            let Rx = currentRx - prevRx;
+            let Ry = currentRy - prevRy;
+
+            cube.rotateX(THREE.MathUtils.DEG2RAD * Rx);
+            cube.rotateY(THREE.MathUtils.DEG2RAD * Ry);
+            
+            prevRx = currentRx;
+            prevRy = currentRy;
+            readyPacket = "";
+        }
         
         renderer.render(scene, camera);
 
