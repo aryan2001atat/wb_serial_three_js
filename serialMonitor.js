@@ -77,8 +77,13 @@ async function listenToPort() {
         // value is a string.
         appendToTerminal(value);
         
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        // cube.rotation.x = THREE.Math.degToRad(value);
+        // cube.rotation.y = 0.01;
+        // var rotations = value.split(",");
+        // var x = rotations[0];
+        // var y = rotations[1];
+        // cube.rotateX(THREE.Math.degToRad(x));
+        // cube.rotateY(THREE.Math.degToRad(y));
         renderer.render(scene, camera);
 
 
