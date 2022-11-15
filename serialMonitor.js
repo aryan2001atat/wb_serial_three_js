@@ -1,8 +1,10 @@
 var port, textEncoder, writableStreamClosed, writer;
 
+let packet = "";
+let readyPacket = "";
 
-
-
+let prevRx = 0;
+let prevRy = 0;
 
 
 // Rendering Cube Code
@@ -74,16 +76,48 @@ async function listenToPort() {
             reader.releaseLock();
             break;
         }
-        // value is a string.
-        appendToTerminal(value);
+
+        let chunks = value.split("");
+        let buffer = "";
+        if(chunks.length > 0) {
+            chunks.forEach(element => {
+                if (element != '\r') {
+                    buffer += element;
+                }
+            });
+        }
+
+        appendToTerminal(buffer);
+
+        let bufferChunks = buffer.split("");
+        if (bufferChunks.length > 0) {
+            bufferChunks.forEach(element => {
+                if (element != '\n') {
+                    packet += element;
+                }  else {
+                    readyPacket = packet;
+                    packet = "";
+                }
+            });
+        }
         
-        // cube.rotation.x = THREE.Math.degToRad(value);
-        // cube.rotation.y = 0.01;
-        // var rotations = value.split(",");
-        // var x = rotations[0];
-        // var y = rotations[1];
-        // cube.rotateX(THREE.Math.degToRad(x));
-        // cube.rotateY(THREE.Math.degToRad(y));
+        if(readyPacket.length > 0) {
+            let rotations = readyPacket.split(",");
+            
+            let currentRx = parseFloat(rotations[0]);
+            let currentRy = parseFloat(rotations[1]);
+            
+            let Rx = currentRx - prevRx;
+            let Ry = currentRy - prevRy;
+
+            cube.rotateX(THREE.MathUtils.DEG2RAD * Rx);
+            cube.rotateY(THREE.MathUtils.DEG2RAD * Ry);
+            
+            prevRx = currentRx;
+            prevRy = currentRy;
+            readyPacket = "";
+        }
+        
         renderer.render(scene, camera);
 
 
